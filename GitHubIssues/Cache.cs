@@ -25,7 +25,7 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading;
-using Alteridem.GitHub.Akavache;
+using Akavache;
 using Alteridem.GitHub.Model;
 using NLog;
 using Octokit;
@@ -38,6 +38,15 @@ namespace Alteridem.GitHub
 
         private const string CredentialCache = "CredentialCache";
         private const string Repository = "Repository";
+
+        /// <summary>
+        /// Gets or sets the name of the application. This must be set before using the cache.
+        /// </summary>
+        public static string ApplicationName
+        {
+            get { return BlobCache.ApplicationName; }
+            set { BlobCache.ApplicationName = value; }
+        }
 
         public static void DeleteCredentials()
         {

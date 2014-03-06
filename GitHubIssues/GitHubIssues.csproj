@@ -47,6 +47,9 @@
     <AssemblyOriginatorKeyFile>..\GitHubExtension\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Akavache">
+      <HintPath>..\packages\akavache.3.2.0\lib\net45\Akavache.dll</HintPath>
+    </Reference>
     <Reference Include="MarkdownDeep">
       <HintPath>..\packages\MarkdownDeep.NET.1.5\lib\.NetFramework 3.5\MarkdownDeep.dll</HintPath>
     </Reference>
@@ -60,9 +63,17 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.1.0\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.2.1.0, Culture=neutral, PublicKeyToken=641a546795d6bf70, processorArchitecture=MSIL">
+    <Reference Include="Octokit, Version=0.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Octokit.0.2.1\lib\net45\Octokit.dll</HintPath>
+      <HintPath>..\packages\Octokit.0.2.2\lib\net45\Octokit.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-core.5.5.0\lib\Portable-Net45+WinRT45+WP8\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Splat.1.2.1\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -100,19 +111,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Akavache\JsonSerializationMixin.cs" />
     <Compile Include="Cache.cs" />
-    <Compile Include="Akavache\BlobCache.cs" />
-    <Compile Include="Akavache\CacheIndexEntry.cs" />
-    <Compile Include="Akavache\EncryptedBlobCache.cs" />
-    <Compile Include="Akavache\IBlobCache.cs" />
-    <Compile Include="Akavache\IFilesystemProvider.cs" />
-    <Compile Include="Akavache\MD5.cs" />
-    <Compile Include="Akavache\MD5Managed.cs" />
-    <Compile Include="Akavache\MemoizingMRUCache.cs" />
-    <Compile Include="Akavache\PersistentBlobCache.cs" />
-    <Compile Include="Akavache\SimpleFilesystemProvider.cs" />
-    <Compile Include="Akavache\Utility.cs" />
     <Compile Include="Converters\MarkdownConverter.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
@@ -123,7 +122,6 @@
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />
-    <Compile Include="Modules\CacheModule.cs" />
     <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Model\ILogonView.cs" />
@@ -159,9 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GitHub.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Akavache\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

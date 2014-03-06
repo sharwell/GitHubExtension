@@ -1,7 +1,7 @@
-﻿using System.Net.Http.Headers;
-using Alteridem.GitHub.Model;
+﻿using Alteridem.GitHub.Model;
 using Ninject.Modules;
 using Octokit;
+using ProductHeaderValue = Octokit.ProductHeaderValue;
 
 namespace Alteridem.GitHub.Modules
 {

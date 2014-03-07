@@ -28,6 +28,7 @@ using System.Windows;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Model;
+using FirstFloor.ModernUI.Windows.Controls;
 
 #endregion
 
@@ -36,13 +37,14 @@ namespace Alteridem.GitHub.Extension.View
     /// <summary>
     /// Interaction logic for AddComment.xaml
     /// </summary>
-    public partial class AddComment : Window
+    public partial class AddComment : ModernWindow
     {
         public AddComment()
         {
             InitializeComponent();
+            Style = ( Style )Resources["EmptyWindow"];
             DataContext = GitHubApi.Issue;
-
+            
             CloseIssueCommand = new RelayCommand(p => OnCloseIssue(), p => CanCloseIssue());
             CommentCommand = new RelayCommand(p => OnCommentOnIssue(), p => CanCommentOnIssue());
         }

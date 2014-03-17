@@ -22,53 +22,25 @@
 // 
 // **********************************************************************************
 
-using System;
-using Alteridem.GitHub.Extension.Interfaces;
+using System.Threading.Tasks;
 using Alteridem.GitHub.Interfaces;
 
-namespace Alteridem.GitHub.Extension.ViewModel
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class GravatarViewModel : BaseViewModel, IGravatar
+    public class GravatarCacheMock : IGravatarCache
     {
-        private string _gravatarId;
-        private double _size;
-        private string _gravatarUrl = string.Empty;
-
-        public double Size
+#pragma warning disable 1998    // I know I am not awaiting anything, this is a test
+        /// <summary>
+        /// Fetches a gravatar and stores it on disk. Once it is stored on
+        /// disk, it will get the version from the cache
+        /// </summary>
+        /// <param name="gravatarId"></param>
+        /// <param name="size"></param>
+        /// <returns>The location of the gravatar</returns>
+        public async Task<string> GetGravatar(string gravatarId, int size)
         {
-            get { return _size; }
-            set
-            {
-                _size = value;
-                OnPropertyChanged();
-                if ( _size > 0 && !Double.IsNaN(_size) && !string.IsNullOrWhiteSpace(_gravatarId) )
-                    GetGravatarUrl();
-            }
+            return string.Format("{0}_{1}.png", gravatarId, size);
         }
-
-        public string GravatarId
-        {
-            get { return _gravatarId; }
-            set
-            {
-                if (value == _gravatarId) return;
-                _gravatarId = value;
-                OnPropertyChanged();
-                if (_size > 0 && !Double.IsNaN(_size) && !string.IsNullOrWhiteSpace(_gravatarId))
-                    GetGravatarUrl();
-            }
-        }
-
-        public string GravatarUrl
-        {
-            get { return _gravatarUrl; }
-        }
-
-        private async void GetGravatarUrl()
-        {
-            var provider = Factory.Get<IGravatarProvider>();
-            _gravatarUrl = await provider.GravatarUrl(GravatarId, Size);
-            OnPropertyChanged("GravatarUrl");
-        }
+#pragma warning restore 1998
     }
 }

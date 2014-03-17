@@ -28,6 +28,7 @@ using System;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.Test.Mocks;
 using Alteridem.GitHub.Extension.ViewModel;
+using Alteridem.GitHub.Interfaces;
 using Alteridem.GitHub.Model;
 using NUnit.Framework;
 
@@ -44,6 +45,8 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         public void SetUp()
         {
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+            Factory.Rebind<IGravatarProvider>().To<GravatarProvider>();
+            Factory.Rebind<IGravatarCache>().To<GravatarCacheMock>();
             _viewModel = Factory.Get<IGravatar>();
         }
 

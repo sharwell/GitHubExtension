@@ -22,22 +22,55 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.Test.Mocks;
-using Alteridem.GitHub.Model;
-using Ninject.Modules;
+#region Using Directives
 
-namespace Alteridem.GitHub.Extension.Test.Modules
+using System;
+using Alteridem.GitHub.Model;
+using NUnit.Framework;
+using Octokit;
+
+#endregion
+
+namespace Alteridem.GitHub.Extension.Test.Model
 {
-    public class MocksModule : NinjectModule
+    [TestFixture]
+    public class RepositoryWrapperTest
     {
-        /// <summary>
-        /// Loads the module into the kernel.
-        /// </summary>
-        public override void Load()
+        private RepositoryWrapper _one;
+        private RepositoryWrapper _two;
+        private RepositoryWrapper _three;
+
+        [TestFixtureSetUp]
+        public void FixtureSetUp()
         {
-            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginViewMock>();
+            _one = CreateWrapper(1, "test");
+            _two = CreateWrapper(1, "test");
+            _three = CreateWrapper(3, "three");
+        }
+
+        private RepositoryWrapper CreateWrapper(int id, string name)
+        {
+            var repository = new Repository
+            {
+                Id = id,
+                Name = name
+            };
+            return new RepositoryWrapper(repository);
+            
+        }
+
+        [Test]
+        public void TestEquals()
+        {
+            Assert.That(_one, Is.EqualTo(_two));
+            Assert.That(_one.Equals(_two), Is.True);
+        }
+
+        [Test]
+        public void TestNotEquals()
+        {
+            Assert.That(_one, Is.Not.EqualTo(_three));
+            Assert.That(_one.Equals(_three), Is.False);
         }
     }
 }

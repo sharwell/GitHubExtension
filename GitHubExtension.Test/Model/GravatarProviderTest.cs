@@ -25,52 +25,55 @@
 #region Using Directives
 
 using System;
+using System.Threading.Tasks;
+using Alteridem.GitHub.Extension.Test.Mocks;
+using Alteridem.GitHub.Interfaces;
 using Alteridem.GitHub.Model;
+using Microsoft.VisualStudio.Shell;
 using NUnit.Framework;
-using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Test.Model
 {
     [TestFixture]
-    public class TestRepositoryWrapper
+    public class GravatarProviderTest
     {
-        private RepositoryWrapper _one;
-        private RepositoryWrapper _two;
-        private RepositoryWrapper _three;
+        private IGravatarProvider _provider;
 
-        [TestFixtureSetUp]
-        public void FixtureSetUp()
+        [SetUp]
+        public void SetUp()
         {
-            _one = CreateWrapper(1, "test");
-            _two = CreateWrapper(1, "test");
-            _three = CreateWrapper(3, "three");
-        }
-
-        private RepositoryWrapper CreateWrapper(int id, string name)
-        {
-            var repository = new Repository
-            {
-                Id = id,
-                Name = name
-            };
-            return new RepositoryWrapper(repository);
-            
+            Factory.Rebind<IGravatarProvider>().To<GravatarProvider>();
+            Factory.Rebind<IGravatarCache>().To<GravatarCacheMock>();
+            _provider = Factory.Get<IGravatarProvider>();
         }
 
         [Test]
-        public void TestEquals()
+        public void TestGravatarUrlIsEmptyIfSizeIsLessThanOrEqualToZero()
         {
-            Assert.That(_one, Is.EqualTo(_two));
-            Assert.That(_one.Equals(_two), Is.True);
+            Assert.That(_provider.GravatarUrl("gravatar_id", 0).Result, Is.Empty);
         }
 
         [Test]
-        public void TestNotEquals()
+        public void TestGravatarUrlIsEmptyIfSizeIsNaN()
         {
-            Assert.That(_one, Is.Not.EqualTo(_three));
-            Assert.That(_one.Equals(_three), Is.False);
+            Assert.That(_provider.GravatarUrl("gravatar_id", double.NaN).Result, Is.Empty);
+        }
+
+        [Test]
+        public void TestGravatarUrlIsEmptyIfGravatarIdIsEmpty()
+        {
+            Assert.That(_provider.GravatarUrl("", 20).Result, Is.Empty);
+        }
+
+        [Test]
+        public async void TestGravatarUrlContainsSizeAndGravatarId()
+        {
+            string url = await _provider.GravatarUrl("gravatar_id", 20);
+
+            Assert.That(url, Contains.Substring("gravatar_id"));
+            Assert.That(url, Contains.Substring("20"));
         }
     }
 }

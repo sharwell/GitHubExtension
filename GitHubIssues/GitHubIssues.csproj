@@ -120,6 +120,10 @@
     <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
     <Compile Include="Model\GitHubApiBase.cs" />
+    <Compile Include="Model\GravatarCache.cs" />
+    <Compile Include="Model\GravatarProvider.cs" />
+    <Compile Include="Interfaces\IGravatarProvider.cs" />
+    <Compile Include="Interfaces\IGravatarCache.cs" />
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />

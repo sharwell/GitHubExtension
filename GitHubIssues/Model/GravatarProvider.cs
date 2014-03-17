@@ -23,52 +23,26 @@
 // **********************************************************************************
 
 using System;
-using Alteridem.GitHub.Extension.Interfaces;
+using System.Threading.Tasks;
 using Alteridem.GitHub.Interfaces;
 
-namespace Alteridem.GitHub.Extension.ViewModel
+namespace Alteridem.GitHub.Model
 {
-    public class GravatarViewModel : BaseViewModel, IGravatar
+    public class GravatarProvider : IGravatarProvider
     {
-        private string _gravatarId;
-        private double _size;
-        private string _gravatarUrl = string.Empty;
+        private readonly IGravatarCache _cache;
 
-        public double Size
+        public GravatarProvider(IGravatarCache cache)
         {
-            get { return _size; }
-            set
-            {
-                _size = value;
-                OnPropertyChanged();
-                if ( _size > 0 && !Double.IsNaN(_size) && !string.IsNullOrWhiteSpace(_gravatarId) )
-                    GetGravatarUrl();
-            }
+            _cache = cache;
         }
 
-        public string GravatarId
+        public async Task<string> GravatarUrl(string gravatarId, double size)
         {
-            get { return _gravatarId; }
-            set
-            {
-                if (value == _gravatarId) return;
-                _gravatarId = value;
-                OnPropertyChanged();
-                if (_size > 0 && !Double.IsNaN(_size) && !string.IsNullOrWhiteSpace(_gravatarId))
-                    GetGravatarUrl();
-            }
-        }
+            if (string.IsNullOrWhiteSpace(gravatarId) || size <= 0 || Double.IsNaN(size))
+                return string.Empty;
 
-        public string GravatarUrl
-        {
-            get { return _gravatarUrl; }
-        }
-
-        private async void GetGravatarUrl()
-        {
-            var provider = Factory.Get<IGravatarProvider>();
-            _gravatarUrl = await provider.GravatarUrl(GravatarId, Size);
-            OnPropertyChanged("GravatarUrl");
+            return await _cache.GetGravatar(gravatarId, (int)size);
         }
     }
 }

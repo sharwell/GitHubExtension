@@ -22,20 +22,23 @@
 // 
 // **********************************************************************************
 
-using System.Reflection;
-using Alteridem.GitHub.Extension.ViewModel;
-using NUnit.Framework;
+#region Using Directives
 
-namespace Alteridem.GitHub.Extension.Test
+using System.Threading.Tasks;
+
+#endregion
+
+namespace Alteridem.GitHub.Interfaces
 {
-    [SetUpFixture]
-    public class AssemblySetup
+    public interface IGravatarCache
     {
-        [SetUp]
-        public void SetUp()
-        {
-            Factory.AddAssembly(Assembly.GetAssembly(typeof(BaseViewModel)));
-            Factory.AddAssembly(Assembly.GetExecutingAssembly());
-        }
+        /// <summary>
+        /// Fetches a gravatar and stores it on disk. Once it is stored on
+        /// disk, it will get the version from the cache
+        /// </summary>
+        /// <param name="gravatarId"></param>
+        /// <param name="size"></param>
+        /// <returns>The location of the gravatar</returns>
+        Task<string> GetGravatar(string gravatarId, int size);
     }
 }

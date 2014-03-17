@@ -24,12 +24,10 @@
 
 using System.Threading.Tasks;
 
-namespace Alteridem.GitHub.Extension.Interfaces
+namespace Alteridem.GitHub.Interfaces
 {
-    public interface IGravatar
+    public interface IGravatarProvider
     {
-        double Size { get; set; }
-        string GravatarId { get; set; }
-        string GravatarUrl { get; }
+        Task<string> GravatarUrl(string gravatarId, double size);
     }
 }
